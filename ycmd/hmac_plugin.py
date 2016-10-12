@@ -63,12 +63,12 @@ class HmacPlugin( object ):
                'Unauthorized, received bad Host header.' )
         return
 
-      body = ToBytes( request.body.read() )
-      if not RequestAuthenticated( request.method, request.path, body,
-                                   self._hmac_secret ):
-        self._logger.info( 'Dropping request with bad HMAC.' )
-        abort( requests.codes.unauthorized, 'Unauthorized, received bad HMAC.' )
-        return
+      # body = ToBytes( request.body.read() )
+      # if not RequestAuthenticated( request.method, request.path, body,
+      #                              self._hmac_secret ):
+      #   self._logger.info( 'Dropping request with bad HMAC.' )
+      #   abort( requests.codes.unauthorized, 'Unauthorized, received bad HMAC.' )
+      #   return
       body = callback( *args, **kwargs )
       SetHmacHeader( body, self._hmac_secret )
       return body
