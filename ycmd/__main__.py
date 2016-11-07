@@ -23,6 +23,7 @@ from __future__ import division
 
 import sys
 import os
+import multiprocessing
 
 sys.path.insert( 0, os.path.dirname( os.path.abspath( __file__ ) ) )
 from server_utils import SetUpPythonPath, CompatibleWithCurrentCore
@@ -192,6 +193,15 @@ def Main():
                                               threads = 30 )
   handlers.wsgi_server.Run()
 
+  if not handlers.is_restart:
+    sys.exit(1)
+
 
 if __name__ == "__main__":
-  Main()
+  while True:
+    p = multiprocessing.Process(target=Main)
+    p.start()
+    p.join()
+    if p.exitcode != 0:
+      break
+

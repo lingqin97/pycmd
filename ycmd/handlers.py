@@ -48,6 +48,7 @@ _hmac_secret = bytes()
 _logger = logging.getLogger( __name__ )
 app = bottle.Bottle()
 wsgi_server = None
+is_restart = False
 
 
 @app.post( '/event_notification' )
@@ -230,6 +231,14 @@ def Shutdown():
   _logger.info( 'Received shutdown request' )
   ServerShutdown()
 
+  return _JsonResponse( True )
+
+
+@app.post( '/restart' )
+def Restart():
+  global is_restart
+  ServerShutdown()
+  is_restart = True
   return _JsonResponse( True )
 
 
